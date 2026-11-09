@@ -1,0 +1,11 @@
+{
+    "TranslationProperties": {
+        "Name": "server.items.DescentInferno_Coin.name"
+    },
+    "Categories": ["Items"],
+    "Icon": "Icons/ItemsGenerated/Ingredient_Bar_Gold.png",
+    "Model": "Resources/Materials/Ingot.blockymodel",
+    "Texture": "Resources/Materials/Ingot_Textures/Gold.png",
+    "PlayerAnimationsId": "Item",
+    "MaxStack": 1000
+}

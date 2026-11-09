@@ -1,0 +1,57 @@
+{
+  "Parent": "Furniture_Village_Counter",
+  "TranslationProperties": {
+    "Name": "server.items.DescentInferno_Trading_Post.name"
+  },
+  "Recipe": null,
+  "BlockType": {
+    "Material": "Solid",
+    "DrawType": "Model",
+    "Opacity": "Transparent",
+    "CustomModel": "Blocks/Decorative_Sets/Village/Counter.blockymodel",
+    "CustomModelTexture": [
+      {
+        "Weight": 1,
+        "Texture": "Blocks/Decorative_Sets/Village/Counter_Texture.png"
+      }
+    ],
+    "Group": "Wood",
+    "HitboxType": "Desk",
+    "VariantRotation": "NESW",
+    "Flags": {},
+    "Gathering": {
+      "Breaking": {
+        "GatherType": "Woods"
+      }
+    },
+    "BlockParticleSetId": "Wood",
+    "Support": {
+      "Down": [
+        {
+          "FaceType": "Full"
+        }
+      ]
+    },
+    "Supporting": {
+      "Up": [
+        {}
+      ]
+    },
+    "BlockSoundSetId": "Wood",
+    "PhysicalMaterialId": "Wood",
+    "ParticleColor": "#5b3525",
+    "TextureComputedColor": "#49291D",
+    "Interactions": {
+      "Use": {
+        "Interactions": [
+          {
+            "Type": "OpenCustomUI",
+            "Page": {
+              "Id": "DescentInfernoMarket"
+            }
+          }
+        ]
+      }
+    }
+  }
+}

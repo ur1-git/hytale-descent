@@ -1,0 +1,38 @@
+{
+  "TranslationProperties": {
+    "Name": "server.items.DescentInferno_Ore_Thorium_Basalt.name"
+  },
+  "BlockType": {
+    "Material": "Solid",
+    "DrawType": "CubeWithModel",
+    "Group": "Stone",
+    "Textures": [
+      {
+        "Weight": 1,
+        "All": "BlockTextures/Rock_Basalt.png"
+      }
+    ],
+    "BlockSoundSetId": "Ore",
+    "BlockParticleSetId": "Ore",
+    "CustomModel": "Resources/Ores/Ore_Large.blockymodel",
+    "CustomModelTexture": [
+      {
+        "Texture": "Resources/Ores/Ore_Textures/Thorium.png",
+        "Weight": 1
+      }
+    ],
+    "Gathering": {
+      "Breaking": {
+        "GatherType": "Benches",
+        "ItemId": "Ore_Thorium"
+      }
+    }
+  },
+  "Icon": "Icons/ItemsGenerated/Ore_Thorium_Basalt.png",
+  "Categories": [
+    "Blocks.Ores"
+  ],
+  "SubCategory": "Ore",
+  "PlayerAnimationsId": "Block",
+  "MaxStack": 25
+}

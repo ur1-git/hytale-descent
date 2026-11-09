@@ -1,0 +1,20 @@
+{
+    "Parent": "Rock_Stone",
+    "TranslationProperties": {
+        "Name": "server.items.DescentInferno_Iron_Node_Depleted.name"
+    },
+    "Variant": true,
+    "BlockType": {
+        "Material": "Solid",
+        "DrawType": "Cube",
+        "Group": "Stone",
+        "Textures": [
+            {
+                "All": "BlockTextures/Rock_Stone.png",
+                "Weight": 1
+            }
+        ],
+        "BlockSoundSetId": "Stone",
+        "BlockParticleSetId": "Stone"
+    }
+}

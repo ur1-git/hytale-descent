@@ -1,0 +1,9 @@
+$C = "../Common.ui";
+
+Group {
+  LayoutMode: Left;
+  Anchor: (Height: 42);
+  Label #Item { Anchor: (Width: 280); Style: $C.@DefaultLabelStyle; }
+  Label #Price { Anchor: (Width: 170); Style: $C.@DefaultLabelStyle; }
+  $C.@TextButton #Trade { Text: "Buy"; Anchor: (Width: 120); }
+}

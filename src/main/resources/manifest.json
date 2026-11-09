@@ -1,27 +1,14 @@
 {
-    "Group": "HytaleModding",
-    "Name": "ExamplePlugin",
-    "Version": "0.0.0",
-    "Description": "Description of your plugin",
-    "Authors": [
-        {
-            "Name": "Your_Name",
-            "Email": "your.email@example.com",
-            "Url": "https://your-website.com"
-        }
-    ],
-    "Website": "https://your-plugin-website.com",
+    "Group": "DescentInferno",
+    "Name": "descent-inferno",
+    "Version": "0.1.0",
+    "Description": "City checkpoints and survival rules for Descent Inferno.",
     "DisabledByDefault": false,
     "IncludesAssetPack": true,
     "Dependencies": {
-        "Hytale:AssetModule": "*"
+        "Hytale:AssetModule": "*",
+        "Hytale:NPC": "*"
     },
-    "OptionalDependencies": {
-        
-    },
-    "ServerVersion": ">=0.5.3 <0.6.0",
-    "Main": "dev.hytalemodding.ExamplePlugin",
-    "UpdateChecker": {
-        "CurseForge": ""
-    }
+    "ServerVersion": "=0.7.6",
+    "Main": "dev.descentinferno.DescentInfernoPlugin"
 }

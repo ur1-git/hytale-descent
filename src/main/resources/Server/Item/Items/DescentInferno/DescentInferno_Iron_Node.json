@@ -1,0 +1,33 @@
+{
+    "Parent": "Ore_Iron_Stone",
+    "Icon": "Icons/ItemsGenerated/Ore_Iron_Stone.png",
+    "TranslationProperties": {
+        "Name": "server.items.DescentInferno_Iron_Node.name"
+    },
+    "BlockType": {
+        "Material": "Solid",
+        "DrawType": "CubeWithModel",
+        "Group": "Stone",
+        "CustomModel": "Resources/Ores/Ore_Large.blockymodel",
+        "CustomModelTexture": [
+            {
+                "Texture": "Resources/Ores/Ore_Textures/Iron.png",
+                "Weight": 1
+            }
+        ],
+        "Textures": [
+            {
+                "All": "BlockTextures/Rock_Stone.png",
+                "Weight": 1
+            }
+        ],
+        "BlockSoundSetId": "Ore",
+        "BlockParticleSetId": "Ore",
+        "Gathering": {
+            "Breaking": {
+                "GatherType": "Benches",
+                "ItemId": "Ore_Iron"
+            }
+        }
+    }
+}

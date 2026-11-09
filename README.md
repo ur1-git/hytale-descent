@@ -1,161 +1,87 @@
-# Hytale Plugin Template
+# Descent Inferno for Hytale
 
-A ready-to-use starting point for creating Hytale server plugins with Java, _or Kotlin_. If you've
-been using the Asset Editor and want to start writing server-side logic — custom commands, event
-handling, gameplay systems — this is the simplest place to begin.
+Descent Inferno is a survival RPG set in the surface world. The prototype includes city checkpoints, armor drops on death, and a test asset pack for protected mining. It uses existing Hytale worlds, so an admin can place checkpoints in cities as they are built.
 
-This template uses the [Hytale Gradle Plugin](https://github.com/AzureDoom/Hytale-Gradle-Plugin),
-a Gradle plugin maintained by AzureDoom for Hytale mod/plugin development. It handles the repetitive
-project setup work for you, including manifest generation, validation, local server runs, IDE source
-setup, and optional hosted Hytale Javadoc injection.
+## Build and install
 
-## How to start
+Use Java 25 and Hytale Server 0.7.6. Build with `./gradlew build` and place `build/libs/descent-inferno-0.1.0.jar` in the server's `mods` directory. The template also supports a local development server through `./gradlew setupHytaleDev` and `./gradlew runServer`.
 
-1. Copy the template by downloading it or using the **Use this template** button.
-2. [Configure or install the Java SDK](https://hytalemodding.dev/en/docs/guides/plugin/setting-up-env)
-   to use Java 25. JetBrains Runtime is recommended for the best hot-reload/debugging experience.
-3. Open the project in your favorite IDE. We recommend
-   [IntelliJ IDEA](https://www.jetbrains.com/idea/download).
-4. Update the project values in `gradle.properties`:
-    - `rootProject.name` in `settings.gradle.kts`
-    - `group`
-    - `manifest_group`
-    - `mod_name`
-    - `mod_id`
-    - `main_class`
-    - `mod_author`
-    - `mod_description`
-    - `mod_url`
-5. Optionally run `./gradlew` if your IDE does not automatically sync the project.
-6. Prepare the Hytale development environment:
+### Upgrading a Descent test world
 
-   ```bash
-   ./gradlew setupHytaleDev
-   ```
+Back up the world and plugin data, then remove the old JAR before installing the new one. Hytale loads the renamed plugin under `DescentInferno:descent-inferno`. To reuse checkpoints, teams, or markets, copy the old plugin data into the directory created for the new plugin. Review existing market listings for renamed custom item IDs before using them.
 
-7. Run the local development server:
+Update world settings from `DescentCity` to `DescentInfernoCity` and from `DescentMiningTest` to `DescentInfernoMiningTest` wherever those settings are used. Permission grants move from `descent.*` to `descentinferno.*`. Custom items and blocks now use the `DescentInferno_` prefix. Replace old custom blocks and items in existing saves before switching JARs, or use a fresh test world.
 
-   ```bash
-   ./gradlew runServer
-   ```
+With the server stopped, add this `Death` section at the top level of the target world's `universe/worlds/<world>/config.json`. If the file already has a `Death` section, replace it for this test.
 
-> On Windows, use `./gradlew.bat` or `gradlew.bat` instead of `./gradlew`. The Gradle wrapper is
-> included so you do not need to install Gradle separately; only Java is required.
-
-When the server starts, the output may prompt you to authorize your Hytale server. After that, you
-can begin developing your plugin while the server handles local development runs.
-
-From here, the [HytaleModding guides](https://hytalemodding.dev/en/docs/guides/plugin/build-and-test)
-cover more details.
-
-## Hytale Gradle Plugin
-
-This template is built around AzureDoom's `com.azuredoom.hytale-tools` Gradle plugin.
-
-The plugin is configured in `build.gradle.kts`:
-
-```kotlin
-plugins {
-    idea
-    java
-    id("com.azuredoom.hytale-tools") version "1.+"
+```json
+"Death": {
+  "RespawnController": {
+    "Type": "DescentInfernoCity"
+  },
+  "ItemsLossMode": "None",
+  "ItemsAmountLossPercentage": 0,
+  "ItemsDurabilityLossPercentage": 0
 }
 ```
 
-The AzureDoom Maven repository is configured in `settings.gradle.kts`:
+Restart the server. These rules apply to worlds that select the `DescentInfernoCity` controller.
 
-```kotlin
-pluginManagement {
-    repositories {
-        gradlePluginPortal()
-        mavenCentral()
-        maven {
-            name = "AzureDoom Maven"
-            url = uri("https://maven.azuredoom.com/mods")
-        }
-    }
-}
-```
+## In-game test
 
-Most plugin-specific settings are controlled from `gradle.properties` and passed into the
-`hytaleTools` block in `build.gradle.kts`. This keeps common project metadata in one easy-to-edit
-place.
+1. Grant a builder the `descentinferno.city.create` permission. Stand on clear, solid ground and run `/descentinfernocity create <city>`. The command saves your exact position. Repeat for a second city.
+2. As a regular player, move within 12 blocks of a checkpoint and run `/descentinfernocity checkin <city>`. Use `/descentinfernocity status` to see the selected city. Try checking in from farther away to verify the distance check.
+3. Equip armor, put an item in your bag, leave the city, and die in survival mode. The armor should drop where you died and the bag item should stay with you. Choose to respawn and verify that you return to your selected city.
+4. Check in at the second city and restart the server. Verify that your selection persists. A player who has never checked in respawns at the world's default spawn.
 
-For full plugin documentation, configuration options, tasks, and multi-project setup, visit the
-[Hytale Gradle Plugin repository](https://github.com/AzureDoom/Hytale-Gradle-Plugin).
+Each world tracks its own checkpoints and player selections. Checkpoint data is stored in `checkpoints.properties` in the plugin's data directory.
 
-## Useful commands
+## Protected mining test
 
-```bash
-# Sync/setup the local Hytale development environment
-./gradlew setupHytaleDev
+1. With the flat test world closed, change `"GameplayConfig": "Default"` to `"GameplayConfig": "DescentInfernoMiningTest"` in the save's `universe/worlds/default/config.json`.
+2. Open the world and run `/gamemode creative`. Place **Descent Inferno Iron Node** next to vanilla iron ore and stone. Put a copper pickaxe and a spare block in your inventory.
+3. Run `/gamemode adventure`. The copper pickaxe should mine the Descent Inferno node and leave the vanilla iron and stone intact. Normal block placement should fail.
+4. Run `/gamemode creative` to place or break blocks again in the same world.
 
-# Run the local Hytale server
-./gradlew runServer
+Mining the node adds one iron ore directly to your inventory and turns the node into depleted stone. After 15 seconds it becomes mineable again. If your inventory cannot accept the ore, the node stays ready.
 
-# Run the server with debugging and hot swap enabled
-./gradlew runServer -Ddebug=true -Dhotswap=true
+Try mining two nodes a few seconds apart to check that their cooldowns are independent. Also try mining with no room for iron. Cooldowns are currently kept in memory. If you close the world while a node is depleted, replace that block in Creative to reset it.
 
-# Check your JVM and hot swap setup
-./gradlew hytaleJvmDoctor
+## Remaining design
 
-# Build the plugin
-./gradlew build
+The next gameplay systems are regional resources and professions, city markets with remote price visibility, and risky travel between cities. The design also calls for travel encounters, PvP and bandit rules, and daily Adventurers Guild quests ranked Wheat through Platinum.
 
-# Refresh dependencies if something fails to resolve
-./gradlew build --refresh-dependencies
-```
+## Teams
 
-## Project structure
+Grant builders `descentinferno.team.assign` to manage teams. Use `/descentinfernoteam player red <player>` to assign a player, or stand next to an NPC and use `/descentinfernoteam npc blue` to assign the closest NPC within six blocks. Team names are created on assignment. Use `none` to clear an assignment and `/descentinfernoteam status` to see your team. Membership is saved by entity ID. An NPC spawned as a replacement has its own ID.
 
-```text
-src/main/java/        Plugin source code
-src/main/resources/   Plugin resources, including manifest.json
-gradle.properties     Main template configuration
-build.gradle.kts      Gradle build and Hytale Gradle Plugin configuration
-settings.gradle.kts   Plugin repositories and project name
-```
+Assigned teammates cannot damage one another. Different teams are hostile for NPC targeting, subject to what the NPC's role can do. Unassigned NPCs keep their native behavior. To test enemy players fighting, enable `IsPvpEnabled` in the test world's config. Keep both players in Adventure.
 
-## Manifest configuration
+## Markets
 
-The generated `manifest.json` is driven by the values in `gradle.properties`, including:
+1. As a builder with `descentinferno.market.admin`, create a market with `/descentinfernomarket create quarry`.
+2. Place a **Descent Inferno Trading Post** in Creative. Aim at it from within six blocks and run `/descentinfernomarket bind quarry`. The command reports the post coordinates. You can also supply `<x> <y> <z>` after the market ID. Posts assigned to the same market share listings.
+3. Give the test buyer some `DescentInferno_Coin` with `/give DescentInferno_Coin --quantity=20`. Coins stack to 1,000. For this test, builders supply the coins.
+4. The seller holds an item in their active hotbar slot and uses the post. Enter the quantity and total coin price, then select **List item**. The buyer uses any post for that market and selects **Buy**.
+5. The seller uses **Claim coins** at a post for the same market. They can also cancel their own listings from the post. Listings and proceeds persist across normal restarts.
 
-- `manifest_group`
-- `mod_id`
-- `version`
-- `mod_description`
-- `mod_author`
-- `mod_url`
-- `main_class`
-- `manifest_dependencies`
-- `manifest_opt_dependencies`
-- `manifestServerVersion`
+Use `/descentinfernomarket list` to see all market IDs and post counts. Use `/descentinfernomarket delete <market>` to delete an empty market and clear its post assignments. Active listings and unclaimed coins prevent deletion or reassignment of the market's last post. All market commands also work with `/descentmarket`.
 
-After changing these values, run:
+## Ore progression
 
-```bash
-./gradlew updatePluginManifest
-```
+Use Descent Inferno ore nodes in Creative. Item IDs follow `DescentInferno_Ore_<Metal>_<Host>`, for example `DescentInferno_Ore_Copper_Stone` or `DescentInferno_Ore_Iron_Basalt`. The original `DescentInferno_Iron_Node` remains the iron-in-stone variant. Nodes come in stone and basalt, with Prisma available in stone. All nodes give one ore and regenerate after 15 seconds. They use the same tier rule regardless of host appearance.
 
-## Troubleshooting
+Before updating an existing test world, replace retired nodes in Creative with the same mineral in stone or basalt. For example, use basalt for cracked basalt and stone for calcite. Replace depleted blocks from retired hosts as well.
 
-- **Gradle sync fails in IntelliJ** — Check that Java 25 is installed and configured under
-  **File → Project Structure → SDKs**.
-- **The Hytale Gradle Plugin does not resolve** — Make sure `settings.gradle.kts` includes the
-  AzureDoom Maven repository at `https://maven.azuredoom.com/mods`.
-- **Build fails with missing dependencies** — Run `./gradlew build --refresh-dependencies` and make
-  sure you have internet access.
-- **Permission denied on `./gradlew`** — Run `chmod +x gradlew` on macOS/Linux.
-- **Hot reload or enhanced class redefinition does not work** — Use JetBrains Runtime and try
-  `./gradlew hytaleJvmDoctor` to verify your JVM setup.
+| Pickaxe | Highest tier it can mine |
+| --- | --- |
+| Wood, Crude, Scrap | Copper |
+| Copper | Iron and Silver |
+| Iron | Thorium and Gold |
+| Thorium | Cobalt |
+| Cobalt | Adamantite |
+| Adamantite | Mithril |
+| Mithril | Onyxium |
+| Onyxium | Prisma |
 
-## Resources
-
-- [Hytale Gradle Plugin](https://github.com/AzureDoom/Hytale-Gradle-Plugin)
-- [Hytale Modding Guides](https://hytalemodding.dev)
-- [Hytale Modding Discord](https://discord.gg/hytalemodding)
-
-## License
-
-Add your own license after copying the template. We recommend MIT, BSD, or Apache to keep the
-modding community open.
+A pickaxe can also mine all lower tiers. These are Descent Inferno prototype balance choices.

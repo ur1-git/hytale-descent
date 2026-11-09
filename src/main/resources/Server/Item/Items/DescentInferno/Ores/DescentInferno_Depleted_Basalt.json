@@ -1,0 +1,17 @@
+{
+  "Parent": "Rock_Stone",
+  "Variant": true,
+  "BlockType": {
+    "Material": "Solid",
+    "DrawType": "Cube",
+    "Group": "Stone",
+    "Textures": [
+      {
+        "Weight": 1,
+        "All": "BlockTextures/Rock_Basalt.png"
+      }
+    ],
+    "BlockSoundSetId": "Stone",
+    "BlockParticleSetId": "Stone"
+  }
+}
